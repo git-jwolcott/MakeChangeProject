@@ -17,8 +17,7 @@ public class MakeChange {
 	double amountPaid = input.nextDouble();
 	
 	double changeDue = amountPaid - purchasePrice;
-
-	String output = "The customer is due $" + changeDue + ". Give the customer ";
+	String output = "The customer is due $" + String.format("%.2f",changeDue) + ". Give the customer ";
 	
 	//evaluate the purchase price v. amount paid
 	//if amount paid is less than purchase price, "too little"
@@ -30,16 +29,12 @@ public class MakeChange {
 		System.out.println("The exact payment amount was received. No change required.");
 	}
 	//if amount paid is greater than purchase price, make change
+	//determine the number and type of bill(s) to be returned
 	else { getBillsDue(changeDue, output);}
 	
+	//close scanner
 	input.close();
 }
-
-	private static void printOutput(String output) {
-		System.out.println();
-		System.out.println(output);
-	}
-
 	
 	private static void getBillsDue(double changeDue, String output) {
 		//create local variables to hold number of bills needed and output string
@@ -49,12 +44,14 @@ public class MakeChange {
 			if(changeDue % 20 == 0 ||((changeDue % 20) >= 1)) {
 				//determine how many twenties to provide
 				numTwenties = (int)changeDue/20;
+				//adjust changeDue
 				changeDue = changeDue - (numTwenties * 20);
 			}
 			//determine the number of tens to provide
 			if(changeDue % 10 == 0 || ((changeDue % 10) >= 1)) {
 				//determine how many tens to provide
 				numTens = (int)changeDue/10;
+				//adjust changeDue
 				changeDue = changeDue - (numTens * 10);
 			}
 			//determine the number of fives to provide
@@ -62,48 +59,26 @@ public class MakeChange {
 				//determine number of fives to provide
 				numFives = (int)changeDue/5;
 				changeDue = changeDue - (numFives * 5);
+				//adjust changeDue
 			}
 			//determine the number of ones to provide
 			if (changeDue % 1 == 0 || ((changeDue % 1) <= 1)) {
 				//determine the number of ones to provide
 				numOnes = (int)changeDue/1;
+				//adjust changeDue
 				changeDue = changeDue - numOnes;
 			}
 			
 			int centsDue = (int)(Math.round(changeDue * 100));
  			
-			//format the output to only show bills and coins with a value to be provided
-			//show the number of ($20, $10, $5, $1, 0.25c, 0.10c, 0.05c, 0.01c) returned
-			if(numTwenties > 0) {
-				if(numTwenties == 1) {
-					output+= (numTwenties + " twenty dollar bill, ");
-				}else {
-					output+=(numTwenties + " twenty dollar bills, ");
-				}
-			}
-			if(numTens > 0) {
-				if(numTens == 1 ) {
-					output+=(numTens + " ten dollar bill, ");
-				}
-				else { 
-					output+=(numTens + " ten dollar bills, ");
-				}
-			}
-			if(numFives > 0) {
-				if(numFives == 1) {
-					output+=(numFives + " five dollar bill, ");
-				}
-				else {
-					output+=(numFives + " five dollar bills, ");
-				}
-			}
-			if(numOnes > 0) {
-				if(numOnes == 1){
-					output+=(numOnes + " one dollar bill, ");					
-				} else {
-					output+=(numOnes + " one dollar bills, ");										
-				}
-			}
+			//format the output to only show bills with a value to be provided
+			//show the number of $20, $10, $5, $1 returned
+			if(numTwenties > 0) {output += numTwenties == 1 ? numTwenties + " twenty dollar bill, " : numTwenties + " twenty dollar bills, ";}
+			if(numTens > 0) {output += numTens == 1 ? numTens + " ten dollar bill, " : numTens + " ten dollar bills, ";}
+			if(numFives > 0) {output += numFives == 1 ? numFives + " five dollar bill, " : numFives + " five dollar bills, ";}
+			if(numOnes > 0) { output +=numOnes == 1 ?numOnes + " one dollar bill, " : numOnes + " one dollar bills, ";}
+			
+			//determine if any coins are to be returned
 			getCentsDue(centsDue, output);
 		}
 
@@ -133,36 +108,21 @@ public class MakeChange {
 			//determine the number of pennies to provide
 			numPennies = (int)centsDue/1;
 		}
-		
-		if(numQtrs > 0) {
-			if(numQtrs == 1) {
-				output+=(numQtrs + " quarter, ");
-			}else {
-				output+=(numQtrs + " quarters, ");
-			}
-		}
-		if(numDimes > 0) {
-			if(numDimes == 1) {
-				output+=(numDimes + " dime, ");					
-			}else {
-				output+=(numDimes + " dimes, ");
-			}
-		}
-		if(numNickels > 0) {
-			if(numNickels == 1) {
-				output+=(numNickels + " nickle, ");					
-			}else {
-				output+=(numNickels + " nickles, ");					
-			}
-		}
-		if(numPennies > 0) {
-			if(numPennies == 1) {
-				output+=(numPennies + " penny. ");					
-			} else {
-				output+=(numPennies + " pennies. ");					
-			}
+				
+		//format the output to only show coins with a value to be provided
+		//show the number of 0.25c, 0.10c, 0.05c, 0.01c returned
+		if(numQtrs > 0) {output += numQtrs == 1 ? numQtrs + " quarter, " : numQtrs + " quarters, ";}
+		if(numDimes > 0) {output += numDimes == 1 ? numDimes + " dime, " : numDimes + " dimes, ";}
+		if(numNickels > 0) {output += numNickels == 1 ? numNickels + " nickle, " : numNickels + " nickles, ";}
+		if(numPennies > 0) {output += numPennies == 1 ? numPennies + " penny. " : numPennies + " pennies. ";					
 		}
 		output = (output.substring(0, output.length() - 2)+ ".");
 		printOutput(output);
 	}
+
+	//print the number of bills and coins to be given to the customer
+	private static void printOutput(String output) {
+		System.out.println();
+		System.out.println(output);
 	}
+}
