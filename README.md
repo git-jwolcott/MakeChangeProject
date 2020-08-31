@@ -15,7 +15,7 @@ The cash register will calculate the amount of change returned to a customer bas
 
 #### How to Run
 1. Enter the price of the purchased item in $00.00 format
-2. Press <Enter>
+2. Press the Enter key
 3. Enter the amount of money the customer paid for the item in $00.00 format.
-4. Press <Enter>
+4. Press the Enter key
 5. See the change amount broken out in denominations for each bill and coin.
