@@ -6,12 +6,14 @@ The cash register will calculate the amount of change returned to a customer bas
 
 
 ### Topics
+* Java Fundamentals
 * Obtaining user input
 * Printing information to the terminal screen
 * String formating
 * Casting data types
 * Using ternary statements
 * Using modulus operator
+* Methods
 
 #### How to Run
 1. Enter the price of the purchased item in $00.00 format
